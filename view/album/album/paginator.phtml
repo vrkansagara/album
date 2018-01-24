@@ -1,0 +1,51 @@
+<?php
+$extraItems = @implode('/', array_map(
+    function ($v, $k) {
+        if (!empty($v)) {
+            return sprintf("%s/%s", $k, $v);
+        }
+    },
+    $setdata,
+    array_keys($setdata)
+));
+?>
+<div class="container">
+    <?php if ($this->pageCount): ?>
+        <div class="paginationControl">
+            <!-- Previous page link -->
+            <?php if (isset($this->previous)): ?>
+                <a href="<?php echo $this->url($this->route, array('page' => $this->first)); ?>">
+                    First
+                </a>
+                <a href="<?php echo $this->url($this->route, array('page' => $this->previous)); ?>">
+                    &lt; Previous
+                </a> |
+            <?php else: ?>
+                <span class="disabled">&lt; Previous</span> |
+            <?php endif; ?>
+
+            <!-- Numbered page links -->
+            <?php foreach ($this->pagesInRange as $page): ?>
+                <?php if ($page != $this->current): ?>
+                    <a href="<?php echo $this->url($this->route, array_merge(array('page' => $page),$setdata)); ?>">
+                        <?php echo $page; ?>
+                    </a>|
+                <?php else: ?>
+                    <?php echo $page; ?> |
+                <?php endif; ?>
+            <?php endforeach; ?>
+
+            <!-- Next page link -->
+            <?php if (isset($this->next)): ?>
+                <a href="<?php echo $this->url($this->route, array('page' => $this->next)); ?>">
+                    Next &gt;
+                </a>
+                <a href="<?php echo $this->url($this->route, array('page' => $this->last)); ?>">
+                    Last
+                </a>
+            <?php else: ?>
+                <span class="disabled">Next &gt;</span>
+            <?php endif; ?>
+        </div>
+    <?php endif; ?>
+</div>

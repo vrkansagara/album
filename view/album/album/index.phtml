@@ -1,0 +1,41 @@
+<?php
+// module/Blog/view/album/album/index.phtml:
+$title = 'My albums';
+$this->headTitle($title);
+?>
+
+<div class="container">
+
+    <h1><?php echo $this->escapeHtml($title); ?></h1>
+    <p>
+        <a href="<?php echo $this->url('album', array('action' => 'add')); ?>">Add new album</a>
+    </p>
+
+    <table class="table">
+        <tr>
+            <th>Title</th>
+            <th>Artist</th>
+            <th>&nbsp;</th>
+        </tr>
+        <?php if (count($this->paginator)): ?>
+            <?php foreach ($this->paginator as $album) :?>
+                <tr style="background-color: <?=(!empty($album->status)) ? 'green' : 'gray'; ?>;">
+                    <td><?php echo $this->escapeHtml($album->title); ?></td>
+                    <td><?php echo $this->escapeHtml($album->artist); ?></td>
+                    <td><?php echo (empty($this->escapeHtml($album->status))) ? 'Inactive' : 'Active'; ?></td>
+                    <td>
+                        <a href="<?php echo $this->url('album',
+                            array('action' => 'edit', 'id' => $album->id)); ?>">Edit</a>
+                        <a href="<?php echo $this->url('album',
+                            array('action' => 'delete', 'id' => $album->id)); ?>">Delete</a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <tr>
+                <td><h2>No Data found</h2></td>
+            </tr>
+        <?php endif; ?>
+    </table>
+</div>
+<?php echo $this->paginationControl($this->paginator, 'Sliding', 'paginator', array('route' => 'album', 'page' => $page, 'setdata' => $setdata)); ?>
